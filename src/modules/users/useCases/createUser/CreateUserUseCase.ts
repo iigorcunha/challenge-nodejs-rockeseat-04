@@ -15,6 +15,7 @@ class CreateUserUseCase {
     if (userExists) {
       throw new Error("email already be taken!");
     }
+
     const user = this.usersRepository.create({ name, email });
 
     return user;

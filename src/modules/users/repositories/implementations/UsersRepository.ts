@@ -24,7 +24,6 @@ class UsersRepository implements IUsersRepository {
     Object.assign(user, {
       name,
       email,
-      admin: false,
       created_at: new Date(),
       updated_at: new Date(),
     });
@@ -47,18 +46,18 @@ class UsersRepository implements IUsersRepository {
   }
 
   turnAdmin(receivedUser: User): User {
-    const userIndex = this.users.findIndex(
-      (user) => user.id === receivedUser.id
-    );
-    this.users.splice(userIndex, 1);
+    const user = this.users.find((user) => user.id === receivedUser.id);
 
-    const { id, name, created_at } = receivedUser;
+    if (!user) {
+      throw new Error("User does not exist");
+    }
 
-    const user = new User();
+    const { id, name, email, created_at } = receivedUser;
 
     Object.assign(user, {
       id,
       name,
+      email,
       admin: true,
       created_at,
       updated_at: new Date(),
